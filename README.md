@@ -38,5 +38,5 @@ REST API
  - Open http://dpe.localhost/api/1.0/promotions?_format=json in a browser to see initial JSON API response for active promotions.
     
     
-**setup anc committed in 65 mins 09 seconds.**
+**setup and committed in 65 mins 09 seconds.**
     
