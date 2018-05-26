@@ -1,0 +1,57 @@
+version: '3.4'
+services:
+  php:
+    image: '4alldigital/drudock-php:7.2'
+    ports:
+      - '22'
+    volumes:
+      - './config/php/ssmtp.conf:/etc/ssmtp/ssmtp.conf'
+      - './config/php/authorized_keys:/root/.ssh/authorized_keys'
+      - '../app:/app:cached'
+    environment:
+      XDEBUG_CONFIG: remote_host=docker.for.mac.localhost
+      PHP_IDE_CONFIG: serverName=drudock.localhost
+      HOST_IP: docker.for.mac.localhost
+    hostname: php
+    networks:
+      - default
+  nginx:
+    image: '4alldigital/drudock-nginx:latest'
+    ports:
+      - '80'
+    volumes:
+      - './config/nginx:/etc/nginx/sites-enabled'
+      - '../app:/app:cached'
+    hostname: nginx
+    networks:
+      - default
+      - proxy
+    environment:
+      VIRTUAL_HOST: dpe.localhost
+      LETSENCRYPT_HOST: dpe.localhost
+      VIRTUAL_NETWORK: nginx-proxy
+  mysql:
+    image: '4alldigital/drudock-mysql:latest'
+    ports:
+      - '3306'
+    volumes:
+      - 'mysql-data:/var/lib/mysql'
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: drudock
+      MYSQL_PASSWORD: MYSQLPASS
+      MYSQL_DATABASE: drudock_db
+    hostname: db
+    healthcheck:
+      test: 'exit 0'
+    networks:
+      - default
+volumes:
+  mysql-data:
+    driver: local
+networks:
+  default:
+    driver: bridge
+  proxy:
+    external:
+      name: proxy_drudock-frontend

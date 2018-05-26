@@ -1,0 +1,17 @@
+appname: DPE
+apptype: D8
+host: dpe.localhost
+dist: Development
+src: New
+services:
+    PHP: '7.2'
+    NGINX: latest
+    MYSQL: latest
+repo: ''
+created: 2018-05-26--15-31-35
+builds:
+    - 2018-05-26--15-31-35
+drudock:
+    version: 1.4-alpha1.0.10
+    date: 2018-05-26--15-31-35
+webroot: web
